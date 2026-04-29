@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react';
+"use client";
+
+import React from 'react';
 import * as THREE from 'three';
-import { Torus } from '@react-three/drei';
-import { generateYarnTexture, generateYarnNormalMap } from '@/utils/textureGenerator';
+import { Torus, useTexture } from '@react-three/drei';
 
 interface StitchModelProps {
   x: number;
@@ -11,21 +12,28 @@ interface StitchModelProps {
 }
 
 const StitchModel: React.FC<StitchModelProps> = ({ x, y, type, color }) => {
-  // Generate textures once
-  const [map, normalMap] = useMemo(() => [
-    generateYarnTexture(),
-    generateYarnNormalMap()
-  ], []);
+  // Load real open-source textures (Fabric048 from AmbientCG)
+  const textures = useTexture({
+    map: '/textures/yarn/Fabric048_1K-JPG_Color.jpg',
+    normalMap: '/textures/yarn/Fabric048_1K-JPG_NormalGL.jpg',
+    roughnessMap: '/textures/yarn/Fabric048_1K-JPG_Roughness.jpg',
+    aoMap: '/textures/yarn/Fabric048_1K-JPG_AmbientOcclusion.jpg',
+  });
+
+  // Optimize texture repeating
+  Object.values(textures).forEach((t) => {
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(1, 1);
+  });
 
   const position: [number, number, number] = [x * 0.8, -y * 1.0, 0];
 
   const materialProps = {
     color,
-    map,
-    normalMap,
-    roughness: 0.9,
-    metalness: 0.05,
-    normalScale: new THREE.Vector2(0.5, 0.5),
+    ...textures,
+    roughness: 1.0,
+    metalness: 0.0,
+    normalScale: new THREE.Vector2(0.8, 0.8),
   };
 
   return (

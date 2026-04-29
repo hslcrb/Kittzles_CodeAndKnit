@@ -153,11 +153,11 @@ const Overlay: React.FC<OverlayProps> = ({ onExport, onReset, stitchCount }) => 
 
         .btn-primary {
           background: var(--accent);
-          color: var(--bg-primary);
+          color: #ffffff;
         }
 
         .btn-primary:hover {
-          background: #ffffff;
+          background: var(--text-primary);
           transform: translateY(-2px);
           box-shadow: 0 4px 20px var(--accent-glow);
         }
@@ -169,7 +169,7 @@ const Overlay: React.FC<OverlayProps> = ({ onExport, onReset, stitchCount }) => 
         }
 
         .btn-secondary:hover {
-          background: var(--border);
+          background: var(--bg-primary);
           transform: translateY(-2px);
         }
 
@@ -177,7 +177,7 @@ const Overlay: React.FC<OverlayProps> = ({ onExport, onReset, stitchCount }) => 
           margin-top: 1.5rem;
           color: var(--text-secondary);
           font-size: 0.75rem;
-          opacity: 0.6;
+          opacity: 0.8;
         }
       `}</style>
     </div>

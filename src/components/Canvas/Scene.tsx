@@ -16,14 +16,14 @@ interface SceneProps {
 
 const Scene: React.FC<SceneProps> = ({ stitches, cursor, fabricRef }) => {
   return (
-    <div style={{ width: '100vw', height: '100vh', background: '#0a0a0a' }}>
+    <div style={{ width: '100vw', height: '100vh', background: '#f8fafc' }}>
       <Canvas shadows camera={{ position: [5, 5, 10], fov: 45 }}>
-        <color attach="background" args={['#0a0a0a']} />
-        <fog attach="fog" args={['#0a0a0a', 10, 30]} />
+        <color attach="background" args={['#f8fafc']} />
+        <fog attach="fog" args={['#f8fafc', 10, 30]} />
         
-        <ambientLight intensity={0.4} />
-        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} />
+        <ambientLight intensity={0.6} />
+        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={0.8} castShadow />
+        <pointLight position={[-10, -10, -10]} intensity={0.3} />
 
         <Suspense fallback={null}>
           <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
@@ -34,13 +34,13 @@ const Scene: React.FC<SceneProps> = ({ stitches, cursor, fabricRef }) => {
           
           <ContactShadows 
             position={[0, -5, 0]} 
-            opacity={0.4} 
+            opacity={0.2} 
             scale={20} 
             blur={2.4} 
             far={4.5} 
           />
           
-          <Environment preset="night" />
+          <Environment preset="apartment" />
         </Suspense>
 
         <OrbitControls 

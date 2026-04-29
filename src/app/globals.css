@@ -1,12 +1,12 @@
 :root {
-  --bg-primary: #0a0a0a;
-  --bg-secondary: #141414;
-  --accent: #f0abfc; /* Light Purple/Pink */
-  --accent-glow: rgba(240, 171, 252, 0.4);
-  --text-primary: #ffffff;
-  --text-secondary: #a1a1aa;
-  --border: #27272a;
-  --success: #22c55e;
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --accent: #d946ef; /* Magenta/Pink */
+  --accent-glow: rgba(217, 70, 239, 0.2);
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --border: #e2e8f0;
+  --success: #10b981;
   --danger: #ef4444;
   --font-main: 'Inter', system-ui, -apple-system, sans-serif;
 }
@@ -21,7 +21,7 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-main);
-  overflow: hidden; /* No scroll for 3D app */
+  overflow: hidden;
   height: 100vh;
   width: 100vw;
 }
@@ -43,7 +43,7 @@ button {
   border: 1px solid var(--border);
   border-radius: 12px;
   backdrop-filter: blur(10px);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .glow-text {
@@ -71,7 +71,6 @@ button {
   to { transform: rotate(360deg); }
 }
 
-/* Custom Scrollbar for overlays */
 ::-webkit-scrollbar {
   width: 6px;
 }
