@@ -12,7 +12,13 @@ export interface Stitch {
   color: string;
 }
 
-export const useKnitting = (initialRows = 10, initialCols = 10) => {
+export const TEMPLATES = {
+  SQUARE: '작은 사각 직물',
+  SCARF: '심플 목도리',
+  COASTER: '컵 받침대',
+};
+
+export const useKnitting = (initialRows = 20, initialCols = 20) => {
   const [stitches, setStitches] = useState<Stitch[]>([]);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const fabricRef = useRef<THREE.Group>(null);
@@ -20,30 +26,33 @@ export const useKnitting = (initialRows = 10, initialCols = 10) => {
   const addStitch = useCallback((type: 'knit' | 'purl' = 'knit') => {
     setStitches((prev) => {
       const exists = prev.find(s => s.x === cursor.x && s.y === cursor.y);
-      if (exists) return prev;
+      let nextStitches = prev;
+      
+      if (!exists) {
+        const newStitch: Stitch = {
+          id: `${cursor.x}-${cursor.y}-${Date.now()}`,
+          x: cursor.x,
+          y: cursor.y,
+          type,
+          color: '#d946ef', // Default Magenta
+        };
+        nextStitches = [...prev, newStitch];
+      }
 
-      const newStitch: Stitch = {
-        id: `${cursor.x}-${cursor.y}`,
-        x: cursor.x,
-        y: cursor.y,
-        type,
-        color: '#f0abfc', // Default accent color
-      };
-
-      // Move cursor to next position
+      // Auto-advance cursor
       setCursor(curr => {
         let nextX = curr.x + 1;
         let nextY = curr.y;
         if (nextX >= initialCols) {
           nextX = 0;
-          nextY = curr.y + 1;
+          nextY = Math.min(initialRows - 1, curr.y + 1);
         }
         return { x: nextX, y: nextY };
       });
 
-      return [...prev, newStitch];
+      return nextStitches;
     });
-  }, [cursor, initialCols]);
+  }, [cursor, initialCols, initialRows]);
 
   const moveCursor = useCallback((dx: number, dy: number) => {
     setCursor(curr => ({
@@ -51,6 +60,44 @@ export const useKnitting = (initialRows = 10, initialCols = 10) => {
       y: Math.max(0, Math.min(initialRows - 1, curr.y + dy)),
     }));
   }, [initialCols, initialRows]);
+
+  const loadTemplate = useCallback((templateName: string) => {
+    let newStitches: Stitch[] = [];
+    let width = 0;
+    let height = 0;
+
+    switch (templateName) {
+      case TEMPLATES.SQUARE:
+        width = 10;
+        height = 10;
+        break;
+      case TEMPLATES.SCARF:
+        width = 8;
+        height = 30;
+        break;
+      case TEMPLATES.COASTER:
+        width = 12;
+        height = 12;
+        break;
+      default:
+        return;
+    }
+
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        newStitches.push({
+          id: `${x}-${y}`,
+          x,
+          y,
+          type: (x + y) % 2 === 0 ? 'knit' : 'purl',
+          color: '#d946ef',
+        });
+      }
+    }
+
+    setStitches(newStitches);
+    setCursor({ x: 0, y: height < initialRows ? height : 0 });
+  }, [initialRows]);
 
   const exportToOBJ = useCallback(() => {
     if (!fabricRef.current) return;
@@ -76,6 +123,7 @@ export const useKnitting = (initialRows = 10, initialCols = 10) => {
     cursor,
     addStitch,
     moveCursor,
+    loadTemplate,
     exportToOBJ,
     resetFabric,
     fabricRef,

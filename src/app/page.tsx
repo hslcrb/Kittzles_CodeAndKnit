@@ -71,6 +71,7 @@ export default function Home() {
       <Overlay 
         onExport={exportToOBJ} 
         onReset={resetFabric} 
+        onLoadTemplate={loadTemplate}
         stitchCount={stitches.length} 
       />
     </main>

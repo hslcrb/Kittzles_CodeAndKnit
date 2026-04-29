@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react';
-import { Sphere } from '@react-three/drei';
 
 interface KnittingCursorProps {
   x: number;
@@ -13,16 +12,19 @@ const KnittingCursor: React.FC<KnittingCursorProps> = ({ x, y }) => {
 
   return (
     <group position={position}>
-      <Sphere args={[0.2, 16, 16]}>
+      <mesh>
+        <sphereGeometry args={[0.15, 16, 16]} />
         <meshStandardMaterial 
-          color="#f0abfc" 
-          transparent 
-          opacity={0.5} 
-          emissive="#f0abfc" 
-          emissiveIntensity={2} 
+          color="#d946ef" 
+          emissive="#d946ef" 
+          emissiveIntensity={1} 
         />
-      </Sphere>
-      <pointLight color="#f0abfc" intensity={0.5} distance={2} />
+      </mesh>
+      <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.3, 0.02, 16, 32]} />
+        <meshStandardMaterial color="#d946ef" opacity={0.5} transparent />
+      </mesh>
+      <pointLight color="#d946ef" intensity={0.8} distance={3} />
     </group>
   );
 };
